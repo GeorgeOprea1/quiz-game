@@ -57,15 +57,14 @@
 }
 
 .top {
-  height: 50%;
+  height: 30%;
   position: relative;
-
   display: flex;
   justify-content: center;
 }
 
 .bottom {
-  height: 50%;
+  height: 70%;
 }
 
 .timer {

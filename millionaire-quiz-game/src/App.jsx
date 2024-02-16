@@ -1,5 +1,6 @@
 import "./App.css";
 import { useState } from "react";
+import Trivia from "./components/Trivia";
 
 function App() {
   const [questionNumber, setQuestionNumber] = useState(1);
@@ -29,7 +30,9 @@ function App() {
           <img src="/millionaire.svg" alt="logo" className="logo" />
           <div className="timer">30</div>
         </div>
-        <div className="bottom"></div>
+        <div className="bottom">
+          <Trivia />
+        </div>
       </div>
       <div className="money-scale">
         <ul className="moneyList">
