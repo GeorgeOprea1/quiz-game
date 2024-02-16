@@ -24,7 +24,13 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="main"></div>
+      <div className="main">
+        <div className="top">
+          <img src="/millionaire.svg" alt="logo" className="logo" />
+          <div className="timer">30</div>
+        </div>
+        <div className="bottom"></div>
+      </div>
       <div className="money-scale">
         <ul className="moneyList">
           {moneyScale.map((m) => (

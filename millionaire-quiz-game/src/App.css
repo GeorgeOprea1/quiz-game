@@ -7,20 +7,22 @@
 .app-container {
   height: 100vh;
   display: flex;
-  background-color: #020230;
+
   color: #fff;
   border: 3px solid black;
-}
-
-.main {
-  flex: 3;
-
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #020230),
     url("./assets/bg.avif");
   background-size: cover;
 }
 
+.main {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
 .money-scale {
+  background-color: rgba(2, 2, 48, 0.3);
   flex: 1;
   display: flex;
   justify-content: center;
@@ -52,4 +54,43 @@
 .amount {
   font-size: 1.2rem;
   font-weight: 900;
+}
+
+.top {
+  height: 50%;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+}
+
+.bottom {
+  height: 50%;
+}
+
+.timer {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 900;
+  position: absolute;
+  bottom: 10px;
+  left: 30px;
+}
+
+.logo {
+  width: 200px;
+  height: 200px;
+  padding-top: 3rem;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.logo:hover {
+  transform: scale(1.2);
 }
