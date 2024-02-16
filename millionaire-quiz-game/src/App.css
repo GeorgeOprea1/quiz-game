@@ -1,6 +1,55 @@
 #root {
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 0;
+}
+
+.app-container {
+  height: 100vh;
+  display: flex;
+  background-color: #020230;
+  color: #fff;
+  border: 3px solid black;
+}
+
+.main {
+  flex: 3;
+
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #020230),
+    url("./assets/bg.avif");
+  background-size: cover;
+}
+
+.money-scale {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.moneyList {
+  list-style: none;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: orange;
+}
+
+.moneyList-item {
+  display: flex;
+  justify-content: space-around;
+  align-itmes: center;
+  border-radius: 5px;
+}
+
+.moneyList-item.active {
+  border: 2px solid white;
+}
+
+.number,
+.amount {
+  font-size: 1.2rem;
+  font-weight: 900;
 }
