@@ -1,9 +1,15 @@
-import "./App.css";
+import "./styles/App.css";
 import { useState } from "react";
 import Trivia from "./components/Trivia";
+import Settings from "./components/Settings";
 
 function App() {
   const [questionNumber, setQuestionNumber] = useState(1);
+  const [start, setStart] = useState(false);
+
+  const getStartedClicked = () => {
+    setStart(true);
+  };
 
   const moneyScale = [
     { id: 1, amount: "$ 100" },
@@ -25,32 +31,45 @@ function App() {
 
   return (
     <div className="app-container">
-      <div className="main">
-        <div className="top">
-          <img src="/millionaire.svg" alt="logo" className="logo" />
-          <div className="timer">30</div>
-        </div>
-        <div className="bottom">
-          <Trivia />
-        </div>
-      </div>
-      <div className="money-scale">
-        <ul className="moneyList">
-          {moneyScale.map((m) => (
-            <li
-              key={m.id}
-              className={
-                questionNumber === m.id
-                  ? "moneyList-item active"
-                  : " moneyList-item"
-              }
-            >
-              <span className="number">{m.id}</span>
-              <span className="amount">{m.amount}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {start ? (
+        <>
+          <div className="main">
+            <div className="top">
+              <img
+                src="/millionaire.svg"
+                alt="logo"
+                className="logo"
+                onClick={() => {
+                  setStart(false);
+                }}
+              />
+              <div className="timer">30</div>
+            </div>
+            <div className="bottom">
+              <Trivia />
+            </div>
+          </div>
+          <div className="money-scale">
+            <ul className="moneyList">
+              {moneyScale.map((m) => (
+                <li
+                  key={m.id}
+                  className={
+                    questionNumber === m.id
+                      ? "moneyList-item active"
+                      : " moneyList-item"
+                  }
+                >
+                  <span className="number">{m.id}</span>
+                  <span className="amount">{m.amount}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      ) : (
+        <Settings getStartedClicked={getStartedClicked} />
+      )}
     </div>
   );
 }

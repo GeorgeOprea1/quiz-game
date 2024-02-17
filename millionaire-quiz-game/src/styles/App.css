@@ -7,11 +7,10 @@
 .app-container {
   height: 100vh;
   display: flex;
-
   color: #fff;
   border: 3px solid black;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #020230),
-    url("./assets/bg.avif");
+    url("../assets/bg.avif");
   background-size: cover;
 }
 

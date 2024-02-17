@@ -1,4 +1,4 @@
-import "../Trivia.css";
+import "../styles/Trivia.css";
 
 const Trivia = () => {
   return (

@@ -1,0 +1,39 @@
+.settings-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #020230),
+    url("../assets/bg.avif");
+  background-size: cover;
+  gap: 1rem;
+}
+
+.category-container,
+.difficulty-container,
+.question-type-container,
+.question-number-container {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+select,
+input {
+  width: 30%;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 600;
+}
