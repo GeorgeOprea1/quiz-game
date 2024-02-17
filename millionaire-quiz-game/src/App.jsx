@@ -1,5 +1,5 @@
 import "./styles/App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import Trivia from "./components/Trivia";
 import Settings from "./components/Settings";
 
@@ -11,6 +11,7 @@ function App() {
   const [questionCategory, setQuestionCategory] = useState("");
   const [questionDifficulty, setQuestionDifficulty] = useState("");
   const [questionType, setQuestionType] = useState("");
+  const [fetchData, setFetchData] = useState([]);
 
   useEffect(() => {
     const apiUrl = `https://opentdb.com/api_category.php`;
@@ -41,8 +42,8 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
-        const questions = data;
-        console.log("Fetched Questions:", questions);
+        setFetchData(data.results);
+        console.log("Fetched Questions:", fetchData);
       })
       .catch((error) => {
         setLoading(false);
@@ -85,7 +86,7 @@ function App() {
               <div className="timer">30</div>
             </div>
             <div className="bottom">
-              <Trivia />
+              <Trivia fetchData={fetchData} />
             </div>
           </div>
           <div className="money-scale">
