@@ -1,39 +1,16 @@
 import { useEffect, useState } from "react";
 import "../styles/Settings.css";
-function Settings({ getStartedClicked }) {
-  const [loading, setLoading] = useState(false);
-  const [options, setOptions] = useState(null);
-  const [questionCategory, setQuestionCategory] = useState("");
-  const [questionDifficulty, setQuestionDifficulty] = useState("");
-  const [questionType, setQuestionType] = useState("");
-  const [numberOfQuestions, setNumberOfQuestions] = useState(50);
-  useEffect(() => {
-    const apiUrl = `https://opentdb.com/api_category.php`;
-    setLoading(true);
-    fetch(apiUrl)
-      .then((res) => res.json())
-      .then((response) => {
-        setLoading(false);
-        setOptions(response.trivia_categories);
-      });
-  }, [setOptions]);
-  const handleCategoryChange = (event) => {
-    setQuestionCategory(event.target.value);
-  };
-  const handleDifficultyChange = (event) => {
-    setQuestionDifficulty(event.target.value);
-  };
-  const handleTypeChange = (event) => {
-    setQuestionType(event.target.value);
-  };
-  const handleAmountChange = (event) => {
-    setNumberOfQuestions(event.target.value);
-  };
-
-  const handleNumberOfQuestions = (event) => {
-    setNumberOfQuestions(event.target.value);
-  };
-
+function Settings({
+  loading,
+  questionCategory,
+  options,
+  questionDifficulty,
+  questionType,
+  handleTypeChange,
+  handleCategoryChange,
+  handleDifficultyChange,
+  fetchQuestions,
+}) {
   if (!loading) {
     return (
       <div className="settings-container">
@@ -83,12 +60,8 @@ function Settings({ getStartedClicked }) {
             </option>
           </select>
         </div>
-        <div className="question-number-container">
-          <h2>Amount of Questions:</h2>
-          <input value={numberOfQuestions} onChange={handleNumberOfQuestions} />
-        </div>
         <div className="button-container">
-          <button onClick={getStartedClicked}>Get Started!</button>
+          <button onClick={fetchQuestions}>Get Started!</button>
         </div>
       </div>
     );

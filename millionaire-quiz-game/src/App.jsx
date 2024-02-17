@@ -1,14 +1,53 @@
 import "./styles/App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Trivia from "./components/Trivia";
 import Settings from "./components/Settings";
 
 function App() {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [start, setStart] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [options, setOptions] = useState(null);
+  const [questionCategory, setQuestionCategory] = useState("");
+  const [questionDifficulty, setQuestionDifficulty] = useState("");
+  const [questionType, setQuestionType] = useState("");
 
-  const getStartedClicked = () => {
+  useEffect(() => {
+    const apiUrl = `https://opentdb.com/api_category.php`;
+    setLoading(true);
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((response) => {
+        setLoading(false);
+        setOptions(response.trivia_categories);
+      });
+  }, [setOptions]);
+  const handleCategoryChange = (event) => {
+    setQuestionCategory(event.target.value);
+  };
+  const handleDifficultyChange = (event) => {
+    setQuestionDifficulty(event.target.value);
+  };
+  const handleTypeChange = (event) => {
+    setQuestionType(event.target.value);
+  };
+
+  const fetchQuestions = () => {
+    const apiUrl = `https://opentdb.com/api.php?amount=15&category=${questionCategory}&difficulty=${questionDifficulty}&type=${questionType}`;
+    setLoading(true);
     setStart(true);
+
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        const questions = data;
+        console.log("Fetched Questions:", questions);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Error fetching questions:", error);
+      });
   };
 
   const moneyScale = [
@@ -68,7 +107,17 @@ function App() {
           </div>
         </>
       ) : (
-        <Settings getStartedClicked={getStartedClicked} />
+        <Settings
+          loading={loading}
+          options={options}
+          questionCategory={questionCategory}
+          questionType={questionType}
+          questionDifficulty={questionDifficulty}
+          handleCategoryChange={handleCategoryChange}
+          handleDifficultyChange={handleDifficultyChange}
+          handleTypeChange={handleTypeChange}
+          fetchQuestions={fetchQuestions}
+        />
       )}
     </div>
   );
