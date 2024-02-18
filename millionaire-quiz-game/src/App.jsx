@@ -2,6 +2,7 @@ import "./styles/App.css";
 import { useState, useEffect, useSyncExternalStore } from "react";
 import Trivia from "./components/Trivia";
 import Settings from "./components/Settings";
+import he from "he";
 
 function App() {
   const [questionNumber, setQuestionNumber] = useState(1);
@@ -12,6 +13,64 @@ function App() {
   const [questionDifficulty, setQuestionDifficulty] = useState("");
   const [questionType, setQuestionType] = useState("");
   const [fetchData, setFetchData] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  const [correctAnswer, setCorrectAnswer] = useState([]);
+  const [answers, setAnswers] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  const handleAnswerClick = (selectedAnswer) => {
+    const isCorrect =
+      selectedAnswer === questions[currentQuestionIndex].answers[0];
+
+    const updatedQuestions = [...questions];
+    updatedQuestions[currentQuestionIndex].selectedAnswer = selectedAnswer;
+    updatedQuestions[currentQuestionIndex].isCorrect = isCorrect;
+    setQuestions(updatedQuestions);
+
+    if (!isCorrect) {
+      setTimeout(() => {
+        setGameOver(true);
+        alert("Game Over!");
+      }, 4000);
+    } else {
+      setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+        } else {
+          setGameOver(true);
+          alert("Congratulations! You've completed the game!");
+        }
+      }, 4000);
+    }
+  };
+
+  useEffect(() => {
+    if (fetchData && fetchData.length > 0) {
+      const updatedQuestions = fetchData.map((questionData) => {
+        return {
+          question: he.decode(questionData.question),
+          answers: [
+            he.decode(questionData.correct_answer),
+            ...questionData.incorrect_answers.map((answer) =>
+              he.decode(answer)
+            ),
+          ],
+        };
+      });
+
+      setQuestions(updatedQuestions);
+      setCorrectAnswer(
+        fetchData.map((questionData) => he.decode(questionData.correct_answer))
+      );
+      setAnswers(
+        fetchData.map((questionData) => [
+          he.decode(questionData.correct_answer),
+          ...questionData.incorrect_answers.map((answer) => he.decode(answer)),
+        ])
+      );
+    }
+  }, [fetchData]);
 
   useEffect(() => {
     const apiUrl = `https://opentdb.com/api_category.php`;
@@ -86,7 +145,11 @@ function App() {
               <div className="timer">30</div>
             </div>
             <div className="bottom">
-              <Trivia fetchData={fetchData} />
+              <Trivia
+                questions={questions}
+                handleAnswerClick={handleAnswerClick}
+                currentQuestionIndex={currentQuestionIndex}
+              />
             </div>
           </div>
           <div className="money-scale">
