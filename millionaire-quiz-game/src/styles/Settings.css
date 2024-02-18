@@ -37,3 +37,14 @@ input {
   font-size: 2rem;
   font-weight: 600;
 }
+
+#getStarted-btn {
+  cursor: pointer;
+  color: black;
+}
+
+#getStarted-btn:hover {
+  background-color: green;
+  color: #fff;
+  border: 2px solid #fff;
+}

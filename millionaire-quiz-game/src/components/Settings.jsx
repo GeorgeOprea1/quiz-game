@@ -9,7 +9,7 @@ function Settings({
   handleTypeChange,
   handleCategoryChange,
   handleDifficultyChange,
-  fetchQuestions,
+  handleStartClick,
 }) {
   if (!loading) {
     return (
@@ -61,7 +61,9 @@ function Settings({
           </select>
         </div>
         <div className="button-container">
-          <button onClick={fetchQuestions}>Get Started!</button>
+          <button id="getStarted-btn" onClick={handleStartClick}>
+            Get Started!
+          </button>
         </div>
       </div>
     );

@@ -3,9 +3,10 @@ import { useState, useEffect, useSyncExternalStore } from "react";
 import Trivia from "./components/Trivia";
 import Settings from "./components/Settings";
 import he from "he";
+import GameOver from "./components/GameOver";
 
 function App() {
-  const [questionNumber, setQuestionNumber] = useState(1);
+  const [settings, setSettings] = useState(true);
   const [start, setStart] = useState(false);
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState(null);
@@ -18,6 +19,7 @@ function App() {
   const [correctAnswer, setCorrectAnswer] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [result, setResult] = useState("");
 
   const handleAnswerClick = (selectedAnswer) => {
     const isCorrect =
@@ -31,7 +33,8 @@ function App() {
     if (!isCorrect) {
       setTimeout(() => {
         setGameOver(true);
-        alert("Game Over!");
+        setStart(false);
+        setResult("lose");
       }, 4000);
     } else {
       setTimeout(() => {
@@ -40,6 +43,7 @@ function App() {
         } else {
           setGameOver(true);
           alert("Congratulations! You've completed the game!");
+          setResult("win");
         }
       }, 4000);
     }
@@ -128,9 +132,35 @@ function App() {
     { id: 15, amount: "$ 1000000" },
   ].reverse();
 
+  const handleLogoClick = () => {
+    setSettings(true);
+    setStart(false);
+    setGameOver(false);
+    setCurrentQuestionIndex(0);
+  };
+
+  const handleStartClick = () => {
+    setSettings(false);
+    setStart(true);
+    fetchQuestions();
+  };
+
   return (
     <div className="app-container">
-      {start ? (
+      {settings && (
+        <Settings
+          loading={loading}
+          options={options}
+          questionCategory={questionCategory}
+          questionType={questionType}
+          questionDifficulty={questionDifficulty}
+          handleCategoryChange={handleCategoryChange}
+          handleDifficultyChange={handleDifficultyChange}
+          handleTypeChange={handleTypeChange}
+          handleStartClick={handleStartClick}
+        />
+      )}
+      {start && (
         <>
           <div className="main">
             <div className="top">
@@ -138,10 +168,7 @@ function App() {
                 src="/millionaire.svg"
                 alt="logo"
                 className="logo"
-                onClick={() => {
-                  setStart(false);
-                  setCurrentQuestionIndex(0);
-                }}
+                onClick={handleLogoClick}
               />
               <div className="timer">30</div>
             </div>
@@ -171,17 +198,16 @@ function App() {
             </ul>
           </div>
         </>
-      ) : (
-        <Settings
-          loading={loading}
-          options={options}
-          questionCategory={questionCategory}
-          questionType={questionType}
-          questionDifficulty={questionDifficulty}
-          handleCategoryChange={handleCategoryChange}
-          handleDifficultyChange={handleDifficultyChange}
-          handleTypeChange={handleTypeChange}
-          fetchQuestions={fetchQuestions}
+      )}
+      {gameOver && (
+        <GameOver
+          result={result}
+          onRestartClick={() => {
+            setSettings(true);
+            setStart(false);
+            setGameOver(false);
+            setCurrentQuestionIndex(0);
+          }}
         />
       )}
     </div>
