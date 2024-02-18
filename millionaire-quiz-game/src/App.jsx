@@ -12,7 +12,6 @@ function App() {
   const [options, setOptions] = useState(null);
   const [questionCategory, setQuestionCategory] = useState("");
   const [questionDifficulty, setQuestionDifficulty] = useState("");
-  const [questionType, setQuestionType] = useState("");
   const [fetchData, setFetchData] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -92,12 +91,9 @@ function App() {
   const handleDifficultyChange = (event) => {
     setQuestionDifficulty(event.target.value);
   };
-  const handleTypeChange = (event) => {
-    setQuestionType(event.target.value);
-  };
 
   const fetchQuestions = () => {
-    const apiUrl = `https://opentdb.com/api.php?amount=15&category=${questionCategory}&difficulty=${questionDifficulty}&type=${questionType}`;
+    const apiUrl = `https://opentdb.com/api.php?amount=15&category=${questionCategory}&difficulty=${questionDifficulty}&type=multiple`;
     setLoading(true);
     setStart(true);
 
@@ -152,11 +148,9 @@ function App() {
           loading={loading}
           options={options}
           questionCategory={questionCategory}
-          questionType={questionType}
           questionDifficulty={questionDifficulty}
           handleCategoryChange={handleCategoryChange}
           handleDifficultyChange={handleDifficultyChange}
-          handleTypeChange={handleTypeChange}
           handleStartClick={handleStartClick}
         />
       )}

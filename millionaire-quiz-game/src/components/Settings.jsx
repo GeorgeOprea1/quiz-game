@@ -46,20 +46,6 @@ function Settings({
             </option>
           </select>
         </div>
-        <div className="question-type-container">
-          <h2>Select Question Type:</h2>
-          <select value={questionType} onChange={handleTypeChange}>
-            <option value="" key="type-0">
-              All
-            </option>
-            <option value="multiple" key="type-1">
-              Multiple Choice
-            </option>
-            <option value="boolean" key="type-2">
-              True/False
-            </option>
-          </select>
-        </div>
         <div className="button-container">
           <button id="getStarted-btn" onClick={handleStartClick}>
             Get Started!
