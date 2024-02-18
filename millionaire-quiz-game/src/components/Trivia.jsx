@@ -6,6 +6,34 @@ const Trivia = ({ fetchData }) => {
   const [questions, setQuestions] = useState([]);
   const [correctAnswer, setCorrectAnswer] = useState([]);
   const [answers, setAnswers] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+
+  const handleAnswerClick = (selectedAnswer) => {
+    const isCorrect =
+      selectedAnswer === questions[currentQuestionIndex].answers[0];
+
+    const updatedQuestions = [...questions];
+    updatedQuestions[currentQuestionIndex].selectedAnswer = selectedAnswer;
+    updatedQuestions[currentQuestionIndex].isCorrect = isCorrect;
+    setQuestions(updatedQuestions);
+
+    if (!isCorrect) {
+      setTimeout(() => {
+        setGameOver(true);
+        alert("Game Over!");
+      }, 4000);
+    } else {
+      setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+        } else {
+          setGameOver(true);
+          alert("Congratulations! You've completed the game!");
+        }
+      }, 4000);
+    }
+  };
 
   useEffect(() => {
     if (fetchData && fetchData.length > 0) {
@@ -36,15 +64,25 @@ const Trivia = ({ fetchData }) => {
 
   return (
     <div className="trivia">
-      {/* Display the first question for now */}
       {questions.length > 0 && (
-        <div className="question">{questions[0].question}</div>
+        <div className="question">
+          {questions[currentQuestionIndex].question}
+        </div>
       )}
       <div className="answers">
-        {/* Display the first set of answers for now */}
-        {answers.length > 0 &&
-          answers[0].map((answer, index) => (
-            <div className="answer" key={index}>
+        {questions.length > 0 &&
+          questions[currentQuestionIndex].answers.map((answer, index) => (
+            <div
+              className={`answer ${
+                questions[currentQuestionIndex].selectedAnswer === answer
+                  ? questions[currentQuestionIndex].isCorrect
+                    ? "correct"
+                    : "wrong"
+                  : ""
+              }`}
+              key={index}
+              onClick={() => handleAnswerClick(answer, index)}
+            >
               {answer}
             </div>
           ))}
