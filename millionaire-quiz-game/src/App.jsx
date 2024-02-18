@@ -140,6 +140,7 @@ function App() {
                 className="logo"
                 onClick={() => {
                   setStart(false);
+                  setCurrentQuestionIndex(0);
                 }}
               />
               <div className="timer">30</div>
@@ -158,7 +159,7 @@ function App() {
                 <li
                   key={m.id}
                   className={
-                    questionNumber === m.id
+                    currentQuestionIndex === m.id - 1
                       ? "moneyList-item active"
                       : " moneyList-item"
                   }
