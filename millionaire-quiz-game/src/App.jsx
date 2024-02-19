@@ -9,6 +9,7 @@ import play from "./sounds/play.mp3";
 import correct from "./sounds/correct.mp3";
 import wrong from "./sounds/wrong.mp3";
 import wait from "./sounds/wait.mp3";
+import click from "./sounds/click.mp3";
 
 function App() {
   const [settings, setSettings] = useState(true);
@@ -30,6 +31,7 @@ function App() {
   const [correctSound] = useSound(correct);
   const [wrongSound] = useSound(wrong);
   const [waitSound, { stop: stopWaitSound }] = useSound(wait, { volume: 0.5 });
+  const [clickSound] = useSound(click);
 
   const intervalIdRef = useRef(null);
 
@@ -59,6 +61,7 @@ function App() {
 
   const handleAnswerClick = (selectedAnswer) => {
     stopTimer();
+    clickSound();
 
     const isCorrect =
       selectedAnswer === questions[currentQuestionIndex].correctAnswer;
@@ -176,6 +179,7 @@ function App() {
   ].reverse();
 
   const handleLogoClick = () => {
+    clickSound();
     setSettings(true);
     setStart(false);
     stopWaitSound();
@@ -185,6 +189,7 @@ function App() {
   };
 
   const handleStartClick = () => {
+    clickSound();
     setSettings(false);
     setStart(true);
     fetchQuestions();
@@ -194,6 +199,15 @@ function App() {
       waitSound();
     }, 5000);
   };
+
+  const handleRestartClick = () => {
+    setSettings(true);
+    setStart(false);
+    setGameOver(false);
+    setCurrentQuestionIndex(0);
+    clickSound();
+  };
+
   const shuffleArray = (array) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -259,15 +273,7 @@ function App() {
         </>
       )}
       {gameOver && (
-        <GameOver
-          result={result}
-          onRestartClick={() => {
-            setSettings(true);
-            setStart(false);
-            setGameOver(false);
-            setCurrentQuestionIndex(0);
-          }}
-        />
+        <GameOver result={result} onRestartClick={handleRestartClick} />
       )}
     </div>
   );
