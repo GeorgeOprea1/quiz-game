@@ -1,5 +1,5 @@
 import "./styles/App.css";
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useEffect } from "react";
 import Trivia from "./components/Trivia";
 import Settings from "./components/Settings";
 import he from "he";
@@ -22,7 +22,7 @@ function App() {
 
   const handleAnswerClick = (selectedAnswer) => {
     const isCorrect =
-      selectedAnswer === questions[currentQuestionIndex].answers[0];
+      selectedAnswer === questions[currentQuestionIndex].correctAnswer;
 
     const updatedQuestions = [...questions];
     updatedQuestions[currentQuestionIndex].selectedAnswer = selectedAnswer;
@@ -41,7 +41,6 @@ function App() {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
         } else {
           setGameOver(true);
-          alert("Congratulations! You've completed the game!");
           setResult("win");
         }
       }, 4000);
@@ -51,27 +50,24 @@ function App() {
   useEffect(() => {
     if (fetchData && fetchData.length > 0) {
       const updatedQuestions = fetchData.map((questionData) => {
+        const decodedQuestion = he.decode(questionData.question);
+        const decodedCorrectAnswer = he.decode(questionData.correct_answer);
+        const decodedIncorrectAnswers = questionData.incorrect_answers.map(
+          (answer) => he.decode(answer)
+        );
+
+        const allAnswers = [decodedCorrectAnswer, ...decodedIncorrectAnswers];
+
+        const shuffledAnswers = shuffleArray(allAnswers);
+
         return {
-          question: he.decode(questionData.question),
-          answers: [
-            he.decode(questionData.correct_answer),
-            ...questionData.incorrect_answers.map((answer) =>
-              he.decode(answer)
-            ),
-          ],
+          question: decodedQuestion,
+          answers: shuffledAnswers,
+          correctAnswer: decodedCorrectAnswer,
         };
       });
 
       setQuestions(updatedQuestions);
-      setCorrectAnswer(
-        fetchData.map((questionData) => he.decode(questionData.correct_answer))
-      );
-      setAnswers(
-        fetchData.map((questionData) => [
-          he.decode(questionData.correct_answer),
-          ...questionData.incorrect_answers.map((answer) => he.decode(answer)),
-        ])
-      );
     }
   }, [fetchData]);
 
@@ -141,6 +137,18 @@ function App() {
     fetchQuestions();
   };
 
+  const shuffleArray = (array) => {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
+    }
+    return shuffledArray;
+  };
+
   return (
     <div className="app-container">
       {settings && (
@@ -160,7 +168,7 @@ function App() {
             <div className="top">
               <img
                 src="/millionaire.svg"
-                alt="logo"
+                alt="Millionaire Game Logo"
                 className="logo"
                 onClick={handleLogoClick}
               />

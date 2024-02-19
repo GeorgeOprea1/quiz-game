@@ -5,8 +5,6 @@ function Settings({
   questionCategory,
   options,
   questionDifficulty,
-  questionType,
-  handleTypeChange,
   handleCategoryChange,
   handleDifficultyChange,
   handleStartClick,
