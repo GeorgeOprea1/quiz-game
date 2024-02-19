@@ -4,6 +4,11 @@ import Trivia from "./components/Trivia";
 import Settings from "./components/Settings";
 import he from "he";
 import GameOver from "./components/GameOver";
+import useSound from "use-sound";
+import play from "./sounds/play.mp3";
+import correct from "./sounds/correct.mp3";
+import wrong from "./sounds/wrong.mp3";
+import wait from "./sounds/wait.mp3";
 
 function App() {
   const [settings, setSettings] = useState(true);
@@ -19,7 +24,12 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [result, setResult] = useState("");
-  const [timer, setTimer] = useState(15);
+  const [timer, setTimer] = useState(30);
+
+  const [playSound, { stop: stopPlaySound }] = useSound(play);
+  const [correctSound] = useSound(correct);
+  const [wrongSound] = useSound(wrong);
+  const [waitSound, { stop: stopWaitSound }] = useSound(wait, { volume: 0.5 });
 
   const intervalIdRef = useRef(null);
 
@@ -34,12 +44,14 @@ function App() {
       setGameOver(true);
       setStart(false);
       setResult("time");
+      stopWaitSound();
+      wrongSound();
     }
 
     return () => {
       clearInterval(intervalIdRef.current);
     };
-  }, [start, timer]);
+  }, [start, timer, stopWaitSound, wrongSound]);
 
   const stopTimer = () => {
     clearInterval(intervalIdRef.current);
@@ -58,20 +70,31 @@ function App() {
 
     if (!isCorrect) {
       setTimeout(() => {
+        stopWaitSound();
+        wrongSound();
+      }, 2000);
+      setTimeout(() => {
         setGameOver(true);
         setStart(false);
         setResult("lose");
-      }, 4000);
+      }, 5000);
     } else {
+      setTimeout(() => {
+        correctSound();
+        stopWaitSound();
+      }, 2000);
       setTimeout(() => {
         if (currentQuestionIndex < questions.length - 1) {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
-          setTimer(15);
+          setTimer(30);
+          setTimeout(() => {
+            waitSound();
+          }, 2000);
         } else {
           setGameOver(true);
           setResult("win");
         }
-      }, 4000);
+      }, 5000);
     }
   };
 
@@ -155,6 +178,8 @@ function App() {
   const handleLogoClick = () => {
     setSettings(true);
     setStart(false);
+    stopWaitSound();
+    stopPlaySound();
     setGameOver(false);
     setCurrentQuestionIndex(0);
   };
@@ -163,9 +188,12 @@ function App() {
     setSettings(false);
     setStart(true);
     fetchQuestions();
-    setTimer(15);
+    setTimer(30);
+    playSound();
+    setTimeout(() => {
+      waitSound();
+    }, 5000);
   };
-
   const shuffleArray = (array) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
