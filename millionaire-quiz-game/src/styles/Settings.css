@@ -3,7 +3,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   color: #fff;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #020230),
@@ -23,9 +23,11 @@
   align-items: center;
 }
 
-select,
-input {
-  width: 30%;
+select {
+  width: 70%;
+  max-width: 200px;
+  border-radius: 1rem;
+  padding: 5px;
 }
 
 .loading {
@@ -41,10 +43,27 @@ input {
 #getStarted-btn {
   cursor: pointer;
   color: black;
+  width: 40%;
+  max-width: 250px;
 }
 
 #getStarted-btn:hover {
   background-color: green;
   color: #fff;
   border: 2px solid #fff;
+}
+
+.selections-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
