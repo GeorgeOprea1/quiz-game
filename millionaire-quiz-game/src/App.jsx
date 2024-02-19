@@ -1,5 +1,5 @@
 import "./styles/App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Trivia from "./components/Trivia";
 import Settings from "./components/Settings";
 import he from "he";
@@ -19,8 +19,35 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [result, setResult] = useState("");
+  const [timer, setTimer] = useState(15);
+
+  const intervalIdRef = useRef(null);
+
+  useEffect(() => {
+    if (start && timer > 0) {
+      intervalIdRef.current = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+
+    if (timer === 0) {
+      setGameOver(true);
+      setStart(false);
+      setResult("time");
+    }
+
+    return () => {
+      clearInterval(intervalIdRef.current);
+    };
+  }, [start, timer]);
+
+  const stopTimer = () => {
+    clearInterval(intervalIdRef.current);
+  };
 
   const handleAnswerClick = (selectedAnswer) => {
+    stopTimer();
+
     const isCorrect =
       selectedAnswer === questions[currentQuestionIndex].correctAnswer;
 
@@ -39,6 +66,7 @@ function App() {
       setTimeout(() => {
         if (currentQuestionIndex < questions.length - 1) {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
+          setTimer(15);
         } else {
           setGameOver(true);
           setResult("win");
@@ -135,6 +163,7 @@ function App() {
     setSettings(false);
     setStart(true);
     fetchQuestions();
+    setTimer(15);
   };
 
   const shuffleArray = (array) => {
@@ -172,7 +201,7 @@ function App() {
                 className="logo"
                 onClick={handleLogoClick}
               />
-              <div className="timer">30</div>
+              <div className="timer">{timer}</div>
             </div>
             <div className="bottom">
               <Trivia
