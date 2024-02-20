@@ -125,11 +125,13 @@
   }
 
   .timer {
-    width: 70%;
-    height: 70%;
+    width: calc(50px + 1vw);
+    height: calc(50px + 1vw);
     border-radius: 50%;
+    border: 5px solid #fff;
     margin: 0;
-    font-size: 1rem;
+    font-size: calc(1rem + 1vw);
+    font-weight: 900;
   }
 
   .timer-container {
