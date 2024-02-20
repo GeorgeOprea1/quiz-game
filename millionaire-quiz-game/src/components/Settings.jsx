@@ -17,8 +17,12 @@ function Settings({
         </div>
         <div className="selections-container">
           <div className="category-container">
-            <h2>Select Category:</h2>
-            <select value={questionCategory} onChange={handleCategoryChange}>
+            <label htmlFor="category-select">Select Category:</label>
+            <select
+              id="category-select"
+              value={questionCategory}
+              onChange={handleCategoryChange}
+            >
               <option>All</option>
               {options &&
                 options.map((option) => (
@@ -29,10 +33,11 @@ function Settings({
             </select>
           </div>
           <div className="difficulty-container">
-            <h2>Select Difficulty:</h2>
+            <label htmlFor="difficulty-select">Select Difficulty:</label>
             <select
               value={questionDifficulty}
               onChange={handleDifficultyChange}
+              id="difficulty-select"
             >
               <option value="" key="difficulty-0">
                 All
