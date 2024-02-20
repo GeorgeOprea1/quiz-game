@@ -1,17 +1,20 @@
 #root {
   width: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #020230),
+    url("../assets/bg.avif");
+  background-size: cover;
   margin: 0 auto;
   padding: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .app-container {
   height: 100vh;
+  width: 100%;
+  max-width: 1536px;
   display: flex;
   color: #fff;
-  border: 3px solid black;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), #020230),
-    url("../assets/bg.avif");
-  background-size: cover;
 }
 
 .main {
@@ -24,13 +27,14 @@
   background-color: rgba(2, 2, 48, 0.3);
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .moneyList {
   list-style: none;
-  width: 100%;
+  width: 80%;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -47,6 +51,7 @@
 
 .moneyList-item.active {
   border: 2px solid white;
+  border-radius: 5px;
 }
 
 .number,
@@ -56,10 +61,11 @@
 }
 
 .top {
-  height: 30%;
-  position: relative;
+  height: 40%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .bottom {
@@ -76,12 +82,16 @@
   justify-content: center;
   font-size: 2rem;
   font-weight: 900;
-  position: absolute;
-  bottom: 10px;
-  left: 30px;
+  margin-left: 2rem;
 }
 
-.logo {
+.timer-container {
+  width: 100%;
+  display: flex;
+  justif-content: start;
+}
+
+.app-logo {
   width: 200px;
   height: 200px;
   padding-top: 3rem;
@@ -89,6 +99,87 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.logo:hover {
+.app-logo:hover {
   transform: scale(1.2);
+}
+
+.money-single {
+  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: orange;
+}
+
+.money-single-item {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .top {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    position: relative;
+  }
+
+  .timer {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .timer-container {
+    width: 15%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 7%;
+    left: 3%;
+  }
+
+  .app-logo {
+    width: 50%;
+    height: 70%;
+  }
+
+  .app-container {
+    flex-direction: column;
+  }
+
+  .moneyList {
+    display: none;
+  }
+
+  .money-single-item {
+    display: block;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .money-single-item.active {
+    border: 2px solid white;
+    border-radius: 5px;
+  }
+
+  .money-single {
+    display: block;
+    width: 80%;
+    color: orange;
+  }
+}
+
+@media (max-height: 1024px) {
+  .app-container {
+    overflow-y: scroll;
+    gap: 2rem;
+    padding-bottom: 2rem;
+  }
 }

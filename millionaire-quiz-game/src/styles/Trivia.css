@@ -87,3 +87,32 @@
     background: crimson;
   }
 }
+
+@media (max-width: 1024px) {
+  .answers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .question {
+    font-size: 1rem;
+    margin-top: 4rem;
+  }
+
+  .answer {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .trivia {
+    gap: 3rem;
+  }
+}
+
+@media (max-height: 1024px) {
+  .question {
+    font-size: 1rem;
+    margin-top: 2rem;
+  }
+}
