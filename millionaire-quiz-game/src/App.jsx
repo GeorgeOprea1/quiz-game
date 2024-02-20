@@ -178,16 +178,6 @@ function App() {
     { id: 15, amount: "$ 1000000" },
   ].reverse();
 
-  const handleLogoClick = () => {
-    clickSound();
-    setSettings(true);
-    setStart(false);
-    stopWaitSound();
-    stopPlaySound();
-    setGameOver(false);
-    setCurrentQuestionIndex(0);
-  };
-
   const handleStartClick = () => {
     clickSound();
     setSettings(false);
@@ -240,10 +230,11 @@ function App() {
               <img
                 src="/millionaire.svg"
                 alt="Millionaire Game Logo"
-                className="logo"
-                onClick={handleLogoClick}
+                className="app-logo"
               />
-              <div className="timer">{timer}</div>
+              <div className="timer-container">
+                <div className="timer">{timer}</div>
+              </div>
             </div>
             <div className="bottom">
               <Trivia
@@ -269,6 +260,17 @@ function App() {
                 </li>
               ))}
             </ul>
+            <div className="money-single">
+              {moneyScale.map(
+                (m) =>
+                  currentQuestionIndex === m.id - 1 && (
+                    <div key={m.id} className="money-single-item active">
+                      <h1 className="number">{m.id}</h1>
+                      <h1 className="amount">{m.amount}</h1>
+                    </div>
+                  )
+              )}
+            </div>
           </div>
         </>
       )}
